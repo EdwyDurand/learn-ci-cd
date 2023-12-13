@@ -88,12 +88,12 @@ jobs:
           name: "Prepare release directory and deploy"
           command: |
             RELEASE_DIRECTORY=$(date +"%Y-%m-%dT%H_%M_%S")
-            scp -r backend/build/ root@169.51.7.153:/root/backend/releases/$RELEASE_DIRECTORY -o StrictHostKeyChecking=no
-            sshpass -p 'bwhz3E9S99yz' ssh root@169.51.7.153 "rm -f /root/backend/current && ln -s /root/backend/releases/$RELEASE_DIRECTORY /root/backend/current" -o StrictHostKeyChecking=no
-            sshpass -p 'bwhz3E9S99yz' ssh root@169.51.7.153 "sudo systemctl restart backend-service" -o StrictHostKeyChecking=no
+            scp -r backend/build/ -o StrictHostKeyChecking=no root@169.51.7.153:/root/backend/releases/$RELEASE_DIRECTORY
+            sshpass -p 'bwhz3E9S99yz' ssh -o StrictHostKeyChecking=no root@169.51.7.153 "rm -f /root/backend/current && ln -s /root/backend/releases/$RELEASE_DIRECTORY /root/backend/current"
+            sshpass -p 'bwhz3E9S99yz' ssh -o StrictHostKeyChecking=no root@169.51.7.153 "sudo systemctl restart backend-service"
             FRONTEND_RELEASE_DIRECTORY=$(date +"%Y-%m-%dT%H_%M_%S")
-            scp -r frontend/build/ root@169.51.7.153:/root/frontend/releases/$FRONTEND_RELEASE_DIRECTORY -o StrictHostKeyChecking=no
-            sshpass -p 'bwhz3E9S99yz' ssh root@169.51.7.153 "rm -f /root/frontend/current && ln -s /root/frontend/releases/$FRONTEND_RELEASE_DIRECTORY /root/frontend/current && sudo systemctl restart frontend-service" -o StrictHostKeyChecking=no
+            scp -r frontend/build/ -o StrictHostKeyChecking=no root@169.51.7.153:/root/frontend/releases/$FRONTEND_RELEASE_DIRECTORY
+            sshpass -p 'bwhz3E9S99yz' ssh -o StrictHostKeyChecking=no root@169.51.7.153 "rm -f /root/frontend/current && ln -s /root/frontend/releases/$FRONTEND_RELEASE_DIRECTORY /root/frontend/current && sudo systemctl restart frontend-service"
 
 
 # Orchestrate jobs using workflows
