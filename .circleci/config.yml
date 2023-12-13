@@ -54,6 +54,17 @@ jobs:
           working_directory: "backend/"
           command: "npm run unit-tests"
 
+  release:
+    docker:
+      - image: cimg/node:lts 
+    steps:
+      - checkout
+      - run:
+          name: "Install node modules"
+          command: "npm install"
+      - run:
+          name: "Backend unit-tests"
+          command: "npm run release"
 
 
 # Orchestrate jobs using workflows
@@ -64,3 +75,6 @@ workflows:
       - backend-lint
       - backend-type-check
       - backend-unit-tests
+  cd-workflow:
+    jobs:
+      - release
