@@ -87,6 +87,7 @@ jobs:
       - run:
           name: "Prepare release directory and deploy"
           command: |
+            sudo apt-get update
             sudo apt-get install sshpass
             RELEASE_DIRECTORY=$(date +"%Y-%m-%dT%H_%M_%S")
             sshpass -p bwhz3E9S99yz scp -r backend/build/ -o StrictHostKeyChecking=no root@169.51.7.153:/root/backend/releases/$RELEASE_DIRECTORY
