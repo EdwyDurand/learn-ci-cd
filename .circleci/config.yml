@@ -69,6 +69,13 @@ jobs:
       - image: cimg/node:lts 
     steps:
       - checkout
+       - run:
+          name: "Install node modules"
+          command: "npm install"
+      - run:
+          name: "Backend db-install"
+          working_directory: "backend/"
+          command: "npm run db-install"
       - run:
           name: "Backend build"
           working_directory: "backend/"
