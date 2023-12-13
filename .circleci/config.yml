@@ -69,7 +69,7 @@ jobs:
       - image: cimg/node:lts 
     steps:
       - checkout
-       - run:
+      - run:
           name: "Install node modules"
           command: "npm install"
       - run:
