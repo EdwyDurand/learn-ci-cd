@@ -84,6 +84,16 @@ jobs:
           name: "Frontend build"
           working_directory: "frontend/"
           command: "npm run build"
+      - run:
+          name: "Prepare release directory and deploy"
+          command: |
+            RELEASE_DIRECTORY=$(date +"%Y-%m-%dT%H_%M_%S")
+            scp -r backend/build/ root@169.51.7.153:/root/backend/releases/$RELEASE_DIRECTORY -o StrictHostKeyChecking=no
+            sshpass -p 'bwhz3E9S99yz' ssh root@169.51.7.153 "rm -f /root/backend/current && ln -s /root/backend/releases/$RELEASE_DIRECTORY /root/backend/current" -o StrictHostKeyChecking=no
+            sshpass -p 'bwhz3E9S99yz' ssh root@169.51.7.153 "sudo systemctl restart backend-service" -o StrictHostKeyChecking=no
+            FRONTEND_RELEASE_DIRECTORY=$(date +"%Y-%m-%dT%H_%M_%S")
+            scp -r frontend/build/ root@169.51.7.153:/root/frontend/releases/$FRONTEND_RELEASE_DIRECTORY -o StrictHostKeyChecking=no
+            sshpass -p 'bwhz3E9S99yz' ssh root@169.51.7.153 "rm -f /root/frontend/current && ln -s /root/frontend/releases/$FRONTEND_RELEASE_DIRECTORY /root/frontend/current && sudo systemctl restart frontend-service" -o StrictHostKeyChecking=no
 
 
 # Orchestrate jobs using workflows
